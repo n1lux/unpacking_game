@@ -4,19 +4,22 @@ from termcolor import colored
 
 
 def build_questions():
-    Question = namedtuple('Question', ('question', 'response', 'represent')) 
-    all_questions = []
+    Question = namedtuple('Question', ('qid', 'question', 'response', 'represent')) 
+    all_questions, qid = [], 0
 
     with open('data.2.csv', 'r') as fd:
-        for line in fd.readlines():
+        for i, line in enumerate(fd.readlines()):
             if '#' in line:
                 q, r, _repr = line.split('#')
                 question = Question(
+			qid = qid ,
                         question=q.strip(), 
                         response=r.strip(), 
                         represent=_repr.strip()
                 )
                 all_questions.append(question)
+                qid += 1
+
 
     return all_questions            
 
@@ -40,7 +43,7 @@ def show_correct_response(q):
 
 
 def show_question(q):
-    print(q.question)
+    print("[{}] {}".format(q.qid, q.question))
 
 
 def main():
